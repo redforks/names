@@ -70,8 +70,8 @@ func (p *pump) retrieve() error {
 		return err
 	}
 	defer func() {
-		if err := resp.Body.Close(); err != nil {
-			log.Printf("[%s] error close response body", tag)
+		if er := resp.Body.Close(); er != nil {
+			log.Printf("[%s] error close response body: %v", tag, er)
 		}
 	}()
 
