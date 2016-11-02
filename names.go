@@ -5,6 +5,7 @@ package names
 import (
 	"bytes"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"sync"
 	"time"
@@ -16,6 +17,8 @@ import (
 type Kind int
 
 const (
+	tag = "names"
+
 	// Person names retrieve from http://code.503web.com/names/name
 	Person Kind = iota
 
@@ -66,7 +69,11 @@ func (p *pump) retrieve() error {
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			log.Printf("[%s] error close response body", tag)
+		}
+	}()
 
 	content, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
