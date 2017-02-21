@@ -30,6 +30,9 @@ const (
 
 	// Firm names retrieve from http://code.503web.com/names/firm
 	Firm
+
+	// Fill is generic text, retrieved from http://code.503web.com/names/fill
+	Fill
 )
 
 // How many names retrieved from name service in a batch
@@ -109,6 +112,7 @@ var (
 	product = newPump("http://code.503web.com/names/product")
 	address = newPump("http://code.503web.com/names/address")
 	firm    = newPump("http://code.503web.com/names/firm")
+	fill    = newPump("http://code.503web.com/names/fill")
 )
 
 // NextPerson returns next random person name.
@@ -131,6 +135,11 @@ func NextFirm() (name string, err error) {
 	return firm.Next()
 }
 
+// NextFill returns next random generit fill text.
+func NextFill() (name string, err error) {
+	return fill.Next()
+}
+
 // Next returns next generated name of sepecific kind. It is multi goroutine safe.
 func Next(kind Kind) (name string, err error) {
 	switch kind {
@@ -142,6 +151,8 @@ func Next(kind Kind) (name string, err error) {
 		return NextAddress()
 	case Firm:
 		return NextFirm()
+	case Fill:
+		return NextFill()
 	}
 	return "", errors.New("Unknown names kind")
 }
